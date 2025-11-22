@@ -38,6 +38,7 @@ export {
   TypedSearchAttributes,
   defineSearchAttributeKey,
 } from './search-attributes';
+export * from './security-utils';
 
 /**
  * Encode a UTF-8 string into a Uint8Array

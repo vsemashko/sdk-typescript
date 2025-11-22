@@ -4,11 +4,12 @@
   "parserOptions": {
     "project": "./packages/*/tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc", "deprecation", "import"],
+  "plugins": ["@typescript-eslint", "eslint-plugin-tsdoc", "deprecation", "import", "security", "no-secrets"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:security/recommended",
     "prettier"
   ],
   "rules": {
@@ -57,7 +58,10 @@
       {
         "patterns": ["@temporalio/*/src/*"]
       }
-    ]
+    ],
+    "no-secrets/no-secrets": ["error", { "tolerance": 5.0 }],
+    "security/detect-object-injection": "off",
+    "security/detect-non-literal-fs-filename": "off"
   },
   "settings": {
     "import/parsers": {
