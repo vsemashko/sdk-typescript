@@ -154,6 +154,96 @@ npm run build
 node ~/path-to/sdk-typescript/scripts/test-example.js --work-dir /tmp/registry/example
 ```
 
+### Security Guidelines
+
+Security is a top priority for the Temporal TypeScript SDK. When contributing, please follow these security guidelines:
+
+#### Security Checks
+
+Before submitting a PR, run the security audit:
+
+```sh
+pnpm run security:check
+```
+
+This will:
+- Check for known vulnerabilities in dependencies
+- Validate that all dependencies are up to date
+- Ensure no security issues are introduced
+
+#### Reporting Security Vulnerabilities
+
+**DO NOT** create public GitHub issues for security vulnerabilities. Instead, please:
+
+1. Email security reports to: sdk@temporal.io
+2. Include a detailed description of the vulnerability
+3. Provide steps to reproduce if applicable
+4. Allow up to 48 hours for initial response
+
+See [SECURITY.md](./SECURITY.md) for our complete security policy.
+
+#### Security Best Practices
+
+When writing code:
+
+**1. Mask Sensitive Data in Logs**
+
+```typescript
+import { maskSensitiveData } from '@temporalio/common';
+
+// ❌ BAD
+console.log('Config:', config);
+
+// ✅ GOOD
+console.log('Config:', maskSensitiveData(config));
+```
+
+**2. Validate Input Lengths**
+
+```typescript
+import { validateInputLength } from '@temporalio/common';
+
+// ✅ GOOD
+validateInputLength(userInput, 1024, 'User input');
+```
+
+**3. Sanitize Error Messages**
+
+```typescript
+import { sanitizeErrorMessage } from '@temporalio/common';
+
+// ✅ GOOD
+catch (error) {
+  console.error('Error:', sanitizeErrorMessage(error));
+}
+```
+
+**4. Never Hardcode Secrets**
+
+- Use environment variables for credentials
+- Never commit API keys, tokens, or passwords
+- Use the provided security utilities to mask sensitive data
+
+**5. Validate External Input**
+
+- Always validate and sanitize user input
+- Use TypeScript's type system for additional safety
+- Implement appropriate length and format checks
+
+#### Security Resources
+
+- [Security Policy](./SECURITY.md) - Vulnerability disclosure and security policy
+- [Security Analysis Report](./SECURITY_ANALYSIS_REPORT.md) - Detailed security analysis
+- [Security Utilities Guide](./docs/SECURITY_UTILITIES_GUIDE.md) - Usage examples for security utilities
+
+#### Automated Security
+
+The repository includes:
+- **Automated dependency scanning** via Dependabot
+- **Security linting** with eslint-plugin-security
+- **Secret detection** with eslint-plugin-no-secrets
+- **CI/CD security checks** on every pull request
+
 ### Style Guide
 
 - Typescript code is linted with [eslint](https://eslint.org/)

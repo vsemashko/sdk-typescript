@@ -52,3 +52,6 @@ jobs:
 
       - run: pnpm run lint.check
       - run: pnpm run lint.prune
+
+      - name: Security Audit
+        run: pnpm run security:check
