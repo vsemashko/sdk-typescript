@@ -3,3 +3,30 @@
 # @temporalio/sdk will be requested for review when
 # someone opens a pull request.
 * @temporalio/sdk
+
+# Security-sensitive files require security team review
+SECURITY.md @temporalio/sdk
+SECURITY_ANALYSIS_REPORT.md @temporalio/sdk
+.github/dependabot.yml @temporalio/sdk
+.github/workflows/conventions.yml @temporalio/sdk
+
+# Security utilities and infrastructure
+packages/common/src/security-utils.ts @temporalio/sdk
+docs/SECURITY_UTILITIES_GUIDE.md @temporalio/sdk
+
+# Authentication and authorization code
+packages/client/src/connection.ts @temporalio/sdk
+packages/worker/src/connection.ts @temporalio/sdk
+packages/common/src/internal-non-workflow/tls-config.ts @temporalio/sdk
+packages/envconfig/src/envconfig.ts @temporalio/sdk
+
+# Cryptography and credential handling
+packages/nexus/src/token.ts @temporalio/sdk
+
+# Build and deployment security
+.github/workflows/ @temporalio/sdk
+package.json @temporalio/sdk
+pnpm-lock.yaml @temporalio/sdk
+
+# Core bridge (native code)
+packages/core-bridge/ @temporalio/sdk

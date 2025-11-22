@@ -1,0 +1,45 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-commit hook for security checks
+echo "🔒 Running pre-commit security checks..."
+
+# 1. Check for secrets in staged files
+echo "🔍 Checking for hardcoded secrets..."
+if git diff --cached --name-only | xargs -I {} sh -c 'test -f "{}" && grep -iE "(password|secret|api[_-]?key|token|private[_-]?key)\s*=\s*[\"'\''][^\"'\'']+[\"'\'']" "{}" && echo "⚠️  Potential secret found in: {}"' | grep -q "⚠️"; then
+    echo "❌ Potential secrets detected in staged files!"
+    echo "   Please review and remove any hardcoded secrets."
+    echo "   Use environment variables or secret management instead."
+    exit 1
+fi
+
+# 2. Check for common security issues
+echo "🔍 Checking for common security issues..."
+
+# Check for eval usage
+if git diff --cached --name-only -z '*.ts' '*.js' | xargs -0 grep -l "eval(" 2>/dev/null; then
+    echo "⚠️  Warning: eval() usage detected. This may be a security risk."
+fi
+
+# Check for dangerous fs operations without path validation
+if git diff --cached --name-only -z '*.ts' '*.js' | xargs -0 grep -l "fs\..*Sync.*req\." 2>/dev/null; then
+    echo "⚠️  Warning: Potential unsafe file operations detected."
+fi
+
+# 3. Run linting on staged files
+echo "🔍 Running linter..."
+pnpm run lint.check || {
+    echo "❌ Linting failed! Please fix linting errors before committing."
+    exit 1
+}
+
+# 4. Run security audit (quick check)
+echo "🔍 Running security audit..."
+pnpm audit --audit-level=high 2>/dev/null || {
+    echo "⚠️  Warning: High severity vulnerabilities detected!"
+    echo "   Run 'pnpm run security:audit' for details."
+    echo "   Consider fixing before committing."
+    # Don't block commit, just warn
+}
+
+echo "✅ Pre-commit checks passed!"

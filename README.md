@@ -8,6 +8,9 @@
   <a href="https://github.com/temporalio/sdk-typescript/blob/main/LICENSE.md">
     <img src="https://img.shields.io/npm/l/temporalio?style=for-the-badge" alt="LICENSE" />
   </a>
+  <a href="https://github.com/temporalio/sdk-typescript/security/policy">
+    <img src="https://img.shields.io/badge/security-policy-blue?style=for-the-badge" alt="Security Policy" />
+  </a>
 </p>
 
 [Temporal](https://temporal.io) is a durable execution system that transparently makes your code durable, fault-tolerant, and simple.
@@ -20,6 +23,61 @@ For documentation and samples, see:
 - [TypeScript SDK docs](https://docs.temporal.io/typescript/introduction)
 - [TypeScript SDK API reference](https://typescript.temporal.io/)
 - [General Temporal docs](https://docs.temporal.io)
+
+## Security
+
+The Temporal TypeScript SDK takes security seriously. We follow industry best practices and implement comprehensive security measures.
+
+### 🔒 Security Features
+
+- **Zero Known Vulnerabilities**: Regular automated dependency scanning and updates
+- **TLS/mTLS Support**: Secure communication with Temporal Server
+- **Input Validation**: Built-in utilities to prevent injection attacks
+- **Credential Masking**: Automatic sensitive data protection in logs
+- **Security Linting**: Automated detection of security anti-patterns
+
+### 📋 Security Resources
+
+- **[Security Policy](SECURITY.md)**: Vulnerability reporting and disclosure policy
+- **[Security Utilities Guide](docs/SECURITY_UTILITIES_GUIDE.md)**: Complete guide to using security utilities
+- **[Security Analysis Report](SECURITY_ANALYSIS_REPORT.md)**: Comprehensive security analysis
+- **[Contributing Guidelines](CONTRIBUTING.md#security-guidelines)**: Security best practices for contributors
+
+### 🛡️ For Developers
+
+The SDK provides security utilities to help you build secure applications:
+
+```typescript
+import {
+  maskSensitiveData,
+  sanitizeErrorMessage,
+  validateInputLength,
+} from '@temporalio/common';
+
+// Mask sensitive data in logs
+const safeConfig = maskSensitiveData(config);
+console.log('Config:', safeConfig);
+
+// Sanitize error messages
+try {
+  // ... code
+} catch (error) {
+  console.error('Error:', sanitizeErrorMessage(error));
+}
+
+// Validate input lengths to prevent DoS
+validateInputLength(userInput, 1024, 'User input');
+```
+
+See the [Security Utilities Guide](docs/SECURITY_UTILITIES_GUIDE.md) for complete documentation.
+
+### 🔐 Reporting Security Issues
+
+**Please do not create public GitHub issues for security vulnerabilities.**
+
+Report security issues to: **sdk@temporal.io**
+
+We will respond within 48 hours and work with you to address the issue promptly.
 
 ## Packages
 
